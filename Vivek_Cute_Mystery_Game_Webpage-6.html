@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Vivek — A Tiny Surprise 💗</title>
+<style>
+:root{
+  --pink:#ff79aa; --pink2:#ffc1d9; --cream:#fff7fb; --purple:#8d6bb8;
+  --ink:#351a35; --glass:rgba(255,255,255,.16);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; min-height:100vh; color:white; overflow-x:hidden;
+  font-family:"Trebuchet MS",system-ui,sans-serif;
+  background:
+    radial-gradient(circle at 20% 10%,#6f477f 0 2%,transparent 20%),
+    radial-gradient(circle at 90% 30%,#552d62 0 2%,transparent 25%),
+    linear-gradient(160deg,#12091d,#28112f 52%,#0d0818);
+}
+button{font:inherit}
+#stars{position:fixed;inset:0;z-index:-2;overflow:hidden}
+.star{position:absolute;width:3px;height:3px;background:white;border-radius:50%;opacity:.65;animation:twinkle 2s infinite alternate}
+@keyframes twinkle{to{opacity:.15;transform:scale(.55)}}
+.screen{display:none;min-height:100vh;padding:32px 18px;align-items:center;justify-content:center}
+.screen.active{display:flex}
+.wrap{width:min(94vw,720px);text-align:center}
+.card{
+  background:rgba(255,255,255,.105);border:1px solid rgba(255,255,255,.18);
+  backdrop-filter:blur(18px);border-radius:34px;padding:30px 22px;
+  box-shadow:0 25px 80px rgba(0,0,0,.32);
+}
+.badge{display:inline-block;padding:8px 14px;border-radius:999px;background:#ffffff13;border:1px solid #ffffff18;font-size:13px}
+h1{font-size:clamp(36px,9vw,66px);line-height:1.05;margin:14px 0}
+h2{font-size:clamp(25px,6vw,38px);margin:12px 0}
+h3{margin:8px 0;font-size:20px}
+p{font-size:17px;line-height:1.7;color:#fff2f8}
+.small{font-size:13px;opacity:.68}
+.btn{
+  border:0;border-radius:999px;padding:14px 21px;margin:8px 4px;cursor:pointer;
+  background:linear-gradient(135deg,#ffe1ed,#fff7fb);color:#4c1938;font-weight:800;
+  box-shadow:0 10px 28px rgba(255,121,170,.22);transition:.2s;
+}
+.btn:hover{transform:translateY(-3px) scale(1.02)}
+.btn.alt{background:#ffffff13;color:white;border:1px solid #ffffff25}
+.progress{height:7px;background:#ffffff12;border-radius:99px;margin:18px 0 24px;overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff82b2,#ffe1ed);transition:.5s}
+
+/* gift */
+.gift-scene{height:220px;position:relative;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.gift{width:205px;height:145px;position:relative;animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-9px) rotate(1deg)}}
+.box{position:absolute;left:17px;bottom:5px;width:171px;height:105px;border-radius:10px 10px 22px 22px;background:linear-gradient(#ff78ad,#e84e8e);box-shadow:0 20px 35px #0004}
+.lid{position:absolute;left:5px;top:40px;width:195px;height:39px;border-radius:11px;background:#ff9dc2;z-index:3}
+.ribbonV{position:absolute;left:88px;top:36px;width:30px;height:114px;background:#fff0f6;z-index:4}
+.ribbonH{position:absolute;left:8px;top:52px;width:190px;height:12px;background:#fff0f6;z-index:5}
+.bow{position:absolute;top:3px;left:65px;font-size:55px;z-index:6}
+
+/* clue game */
+.cluebox{margin:20px 0;padding:22px;border-radius:25px;background:#ffffff0e;border:1px solid #ffffff15}
+.choice-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:16px}
+.choice{
+  width:100%;border:1px solid #ffffff1e;border-radius:20px;padding:16px;text-align:left;
+  background:#ffffff0b;color:white;cursor:pointer;transition:.2s;font-size:16px;
+}
+.choice:hover{background:#ffffff17;transform:translateY(-2px)}
+.feedback{min-height:25px;margin:8px;color:#ffd0e2;font-weight:700}
+.sparkle{font-size:42px;animation:pop .7s ease}
+@keyframes pop{50%{transform:scale(1.25) rotate(8deg)}}
+
+/* choose cards */
+.choose-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.choose{
+  min-height:135px;border:1px solid #ffffff20;border-radius:24px;background:#ffffff0b;
+  color:white;padding:18px;cursor:pointer;transition:.25s;
+}
+.choose:hover{transform:translateY(-5px) rotate(-1deg);background:#ffffff15}
+.choose .emoji{font-size:34px;display:block;margin-bottom:10px}
+.revealbox{margin-top:18px;padding:18px;border-radius:22px;background:#ff86b51a;display:none}
+@media(max-width:520px){.choose-grid{grid-template-columns:1fr}.card{padding:25px 17px}}
+
+/* memory wall */
+.memory-wall{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px}
+.note{padding:19px 14px;min-height:120px;color:#4b2840;border-radius:12px 20px 15px 18px;box-shadow:0 10px 20px #0002;transform:rotate(var(--r));animation:floatnote 3s ease-in-out infinite}
+.note:nth-child(odd){background:#ffe3a9}.note:nth-child(even){background:#ffd2e2}
+@keyframes floatnote{50%{transform:rotate(var(--r)) translateY(-5px)}}
+
+/* ticket */
+.ticket{margin:20px auto;padding:22px;border:2px dashed #ffc5dc;border-radius:25px;background:#fff0f71a;position:relative}
+.ticket h3{font-size:28px}
+.ticket-row{display:flex;justify-content:space-between;gap:10px;text-align:left;padding:10px 0;border-bottom:1px solid #ffffff18}
+.ticket-row:last-child{border-bottom:0}
+
+/* final */
+.reveal{text-align:left}
+.reveal .center{text-align:center}
+.final-message p{font-size:16px}
+.final-message .big{font-size:21px;text-align:center;font-weight:800}
+.final-button{text-align:center;margin-top:22px}
+#heartLayer{position:fixed;inset:0;pointer-events:none;z-index:50}
+.heart{position:absolute;bottom:7vh;font-size:26px;animation:heartUp 2.8s ease-out forwards}
+@keyframes heartUp{from{opacity:1;transform:translateY(0) scale(.7) rotate(0)}to{opacity:0;transform:translate(var(--dx),-90vh) scale(1.4) rotate(25deg)}}
+.toast{margin:12px auto 0;min-height:22px;font-size:14px;color:#ffd2e4}
+
+.tap-area{position:relative;height:190px;margin:20px auto;border:2px dashed rgba(255,255,255,.28);border-radius:24px;background:rgba(255,255,255,.06);overflow:hidden}
+.moving-heart{position:absolute;left:45%;top:45%;width:64px;height:64px;border:0;border-radius:50%;background:rgba(255,121,170,.22);font-size:34px;cursor:pointer;transition:left .22s ease,top .22s ease,transform .15s ease}
+.moving-heart:active{transform:scale(.8)}
+.score{font-size:18px;font-weight:900;margin:12px 0;color:#ffd8e7}
+</style>
+</head>
+<body>
+<div id="stars"></div>
+<div id="heartLayer"></div>
+
+<!-- 1 -->
+<section class="screen active" id="s1">
+<div class="wrap"><div class="card">
+<span class="badge">🎀 A tiny website made especially for Vivek</span>
+<h1>🎁 Mystery Gift</h1>
+<p><b>Open only if you're ready…</b> 👀💗</p>
+<div class="gift-scene" onclick="go(2)">
+  <div class="gift"><div class="bow">🎀</div><div class="lid"></div><div class="box"></div><div class="ribbonV"></div><div class="ribbonH"></div></div>
+</div>
+<button class="btn" onclick="go(2)">Open the suspiciously cute box 🎁</button>
+<p class="small">Warning: may contain unnecessary cuteness. 😭</p>
+</div></div>
+</section>
+
+<!-- 2 intro -->
+<section class="screen" id="s2">
+<div class="wrap"><div class="card">
+<span class="badge">🧩 Mini Game</span>
+<h2>Okay detective… 🕵️‍♂️</h2>
+<p>Don't worry. There are no hard questions. 😭<br>Bas cute-cute questions hain. Pinky promise. 🎀</p>
+<div class="progress"><i style="width:0"></i></div>
+<div class="cluebox"><div class="sparkle">👀</div><h3>Ready?</h3><p>Tap the button and let's see if you actually know me. 😌</p>
+<button class="btn" onclick="go(3)">Let's play 💗</button></div>
+</div></div>
+</section>
+
+<!-- 3 -->
+<section class="screen" id="s3">
+<div class="wrap"><div class="card">
+<span class="badge">🧩 Question 1 / 4</span>
+<div class="progress"><i style="width:25%"></i></div>
+<h2>Easy one! 👀</h2>
+<div class="cluebox"><h3>Who is this website made for? 🎀</h3></div>
+<div class="choice-grid">
+<button class="choice" onclick="answer(3,true)">💗 A) Vivek</button>
+<button class="choice" onclick="answer(3,false)">😂 B) My neighbour</button>
+<button class="choice" onclick="answer(3,false)">🐱 C) A random cat</button>
+</div><div class="feedback" id="f3"></div>
+</div></div>
+</section>
+
+<!-- 4 -->
+<section class="screen" id="s4">
+<div class="wrap"><div class="card">
+<span class="badge">🧩 Question 2 / 4</span>
+<div class="progress"><i style="width:50%"></i></div>
+<h2>You definitely know this! 🧸</h2>
+<div class="cluebox"><h3>What do I call you? 💗</h3></div>
+<div class="choice-grid">
+<button class="choice" onclick="answer(4,true)">🎀 A) Kucchu Puchu</button>
+<button class="choice" onclick="answer(4,false)">😂 B) Mr. Drama</button>
+<button class="choice" onclick="answer(4,false)">😎 C) Mr. Perfect</button>
+</div><div class="feedback" id="f4"></div>
+</div></div>
+</section>
+
+<!-- 5 -->
+<section class="screen" id="s5">
+<div class="wrap"><div class="card">
+<span class="badge">🧩 Question 3 / 4</span>
+<div class="progress"><i style="width:75%"></i></div>
+<h2>One cute question! 🥹</h2>
+<div class="cluebox"><h3>What can instantly make me smile? 💗</h3></div>
+<div class="choice-grid">
+<button class="choice" onclick="answer(5,true)">🥹 A) Your message</button>
+<button class="choice" onclick="answer(5,false)">📚 B) Homework</button>
+<button class="choice" onclick="answer(5,false)">😴 C) Sleeping all day</button>
+</div><div class="feedback" id="f5"></div>
+</div></div>
+</section>
+
+<!-- 6 -->
+<section class="screen" id="s6">
+<div class="wrap"><div class="card">
+<span class="badge">🧩 FINAL QUESTION / 4</span>
+<div class="progress"><i style="width:100%"></i></div>
+<h2>Last one, promise 🥹</h2>
+<div class="cluebox"><h3>What should you do after opening the final surprise? 👀🎀</h3></div>
+<div class="choice-grid">
+<button class="choice" onclick="answer(6,true)">🥹 A) Smile</button>
+<button class="choice" onclick="answer(6,false)">😴 B) Go to sleep</button>
+<button class="choice" onclick="answer(6,false)">🏃 C) Run away</button>
+</div><div class="feedback" id="f6"></div>
+</div></div>
+</section>
+
+<!-- 7 choose one -->
+<section class="screen" id="s7">
+<div class="wrap"><div class="card">
+<span class="badge">💌 Bonus Round</span>
+<h2>Choose ONE 👀</h2>
+<p>Don't overthink. Just pick whatever feels cute. 🎀</p>
+<div class="choose-grid">
+<button class="choose" onclick="choose('message')"><span class="emoji">💗</span><b>A cute message</b><br><span class="small">for you</span></button>
+<button class="choose" onclick="choose('secret')"><span class="emoji">🤫</span><b>A tiny secret</b><br><span class="small">shhh…</span></button>
+<button class="choose" onclick="choose('confession')"><span class="emoji">😂</span><b>A funny confession</b><br><span class="small">don't judge 😭</span></button>
+<button class="choose" onclick="choose('surprise')"><span class="emoji">🎁</span><b>One last surprise</b><br><span class="small">hmm… 👀</span></button>
+</div>
+<div class="revealbox" id="choiceReveal"></div>
+<button class="btn" id="continueChoice" style="display:none" onclick="go(8)">Continue to the secret page 🌙</button>
+</div></div>
+</section>
+
+<!-- 8 little surprise card -->
+<section class="screen" id="s8">
+<div class="wrap"><div class="card">
+<span class="badge">🎀 Little Surprise</span>
+<h2>One tiny certificate for you 🧸</h2>
+<div class="ticket">
+<h3>OFFICIALLY CERTIFIED<br>AS MY KUCCHU PUCHU 💗</h3>
+<div class="ticket-row"><span>Special talent</span><b>Making me smile</b></div>
+<div class="ticket-row"><span>Side effect</span><b>Making me miss you 😭</b></div>
+<div class="ticket-row"><span>Special duty</span><b>Being cute & annoying</b></div>
+<div class="ticket-row"><span>Status</span><b>Very important person 🫶🏻</b></div>
+</div>
+<button class="btn" onclick="go(9)">Okay, what's next? 👀</button>
+</div></div>
+</section>
+
+<!-- 9 game: don't pick the boring one -->
+<section class="screen" id="s9">
+<div class="wrap"><div class="card">
+<span class="badge">🎮 Mini Game 1</span>
+<h2>Pick the cutest answer 😭🎀</h2>
+<p>Rule: there is only ONE answer that sounds like Vivek. 👀</p>
+<div class="choice-grid">
+<button class="choice" onclick="mini1(this,false)">😐 “I am very serious.”</button>
+<button class="choice" onclick="mini1(this,true)">🧸 “Okayyy Kucchu Puchu accepts the mission.”</button>
+<button class="choice" onclick="mini1(this,false)">📚 “I have homework.”</button>
+</div>
+<div class="feedback" id="mini1Feedback"></div>
+<button class="btn" id="mini1Next" style="display:none" onclick="go(10)">Next game 🎮</button>
+</div></div>
+</section>
+
+<!-- 10 game: tap the heart -->
+<section class="screen" id="s10">
+<div class="wrap"><div class="card">
+<span class="badge">💗 Mini Game 2</span>
+<h2>Catch the Kucchu Puchu! 🧸</h2>
+<p>Tap the heart 5 times before it escapes. 😭😂</p>
+<div class="tap-area" id="tapArea">
+<button class="moving-heart" id="movingHeart" onclick="catchHeart()">💗</button>
+</div>
+<div class="score" id="heartScore">Hearts caught: 0 / 5</div>
+<div class="feedback" id="heartFeedback"></div>
+<button class="btn" id="heartNext" style="display:none" onclick="go(11)">I caught it 😭💗</button>
+</div></div>
+</section>
+
+<!-- 11 game: cute truth machine -->
+<section class="screen" id="s11">
+<div class="wrap"><div class="card">
+<span class="badge">🤖 Cute Machine</span>
+<h2>Vivek Truth Scanner 👀</h2>
+<p>One last serious scientific question:</p>
+<div class="cluebox">
+<h3>Are you secretly cute? 🧸</h3>
+<div class="choice-grid">
+<button class="choice" onclick="truth(true)">🥹 Yes</button>
+<button class="choice" onclick="truth(true)">😂 Obviously</button>
+<button class="choice" onclick="truth(false)">😎 No</button>
+</div>
+<div class="feedback" id="truthFeedback"></div>
+</div>
+<button class="btn" id="truthNext" style="display:none" onclick="go(12)">Okay, show me the next surprise 💗</button>
+</div></div>
+</section>
+
+<!-- 12 memory wall -->
+<section class="screen" id="s12">
+<div class="wrap"><div class="card">
+<span class="badge">🫶 Little Memory Wall</span>
+<h2>Some tiny reminders…</h2>
+<p>Because apparently one message wasn't enough. 😭</p>
+<div class="memory-wall">
+<div class="note" style="--r:-2deg">Your smile = instant mood upgrade. 🥹💗</div>
+<div class="note" style="--r:2deg">You are my favourite person to annoy. 😂🎀</div>
+<div class="note" style="--r:-3deg">Kucchu Puchu status: permanently active. 🧸</div>
+<div class="note" style="--r:3deg">You make normal moments feel special. ✨</div>
+<div class="note" style="--r:-1deg">Favourite notification? Still you. 📱💗</div>
+<div class="note" style="--r:2deg">Okay… I really, really like having you in my life. 🫶🏻</div>
+</div>
+<button class="btn" onclick="go(13)">Okay… final boss 👀🎮</button>
+</div></div>
+</section>
+
+<!-- 13 final boss -->
+<section class="screen" id="s13">
+<div class="wrap"><div class="card">
+<span class="badge">🎮 FINAL BOSS</span>
+<h1>Can you survive my cuteness? 😭🎀</h1>
+<p>Choose wisely. There is absolutely no pressure. 👀</p>
+<div class="cluebox">
+<h3>What will you do after seeing all this?</h3>
+<div class="choice-grid">
+<button class="choice" onclick="boss('correct')">🥹 A) Smile and accept the cuteness</button>
+<button class="choice" onclick="boss('funny')">😂 B) Pretend I'm not this cute</button>
+<button class="choice" onclick="boss('funny')">🏃 C) Run away (impossible)</button>
+</div>
+<div class="feedback" id="bossFeedback"></div>
+</div>
+</div></div>
+</section>
+
+<!-- 14 final -->
+<section class="screen" id="s14">
+<div class="wrap"><div class="card reveal">
+<div class="center"><span class="badge">💌 FINAL REVEAL UNLOCKED</span>
+<h2>And finally…</h2>
+<p style="font-size:20px;font-weight:800">something I really wanted to tell you. 🥹💗</p></div>
+<div class="final-message">
+<p>Hey Vivek,</p>
+<p>Pata hai? Is poori website ka favourite part mera ye last message hai… because yahan main bas itna kehna chahti hoon—</p>
+<p class="big">I’m really, really happy that you’re in my life. 🥹💗</p>
+<p>Tumhari ek chhoti si smile bhi kaafi hai mera mood better karne ke liye.</p>
+<p>So please, ab screen dekh ke ek smile kar do… warna ye website incomplete maanungi. 😭🎀</p>
+<p>You’re my favourite notification, favourite person to annoy, and definitely my favourite Kucchu Puchu. 🧸💗</p>
+<p class="big">I love you so much, Vivek. 🫶🏻</p>
+</div>
+<div class="final-button">
+<button class="btn" onclick="finish()">Okay, now smile for me 🥹👉🏻👈🏻</button>
+</div>
+</div></div>
+</section>
+
+<!-- 15 ending -->
+<section class="screen" id="s15">
+<div class="wrap"><div class="card">
+<div class="sparkle">💗✨🧸✨💗</div>
+<h1>Hehe, I knew you'd smile 💗</h1>
+<p>You officially survived the cuteness.</p>
+<p style="font-size:23px">Mission: <b>SUCCESS</b> 🎀</p>
+<p class="small">Now you can go back and pretend you weren't smiling. 😌😂</p>
+</div></div>
+</section>
+
+<script>
+for(let i=0;i<90;i++){
+  const s=document.createElement('span');s.className='star';
+  s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';
+  s.style.animationDelay=Math.random()*2.5+'s';document.getElementById('stars').appendChild(s);
+}
+function go(n){
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function answer(n,correct){
+  const f=document.getElementById('f'+n);
+  if(correct){
+    f.textContent='Correct! You are officially cute-approved. 🥹💗';
+    setTimeout(()=>go(n+1),500);
+  }else{
+    f.textContent='Hehe nope 😭 Try the obvious cute answer! 🎀';
+  }
+}
+function choose(type){
+  const box=document.getElementById('choiceReveal');
+  const texts={
+    message:'💗 Your message: “You make my days better just by being you.”',
+    secret:'🤫 Tiny secret: I probably smile when your notification pops up. 😭',
+    confession:'😂 Confession: Making this whole website was totally worth it just to see your reaction.',
+    surprise:'🎁 Plot twist: the real surprise is still waiting at the end. 👀💗'
+  };
+  box.innerHTML='<b>'+texts[type]+'</b>';
+  box.style.display='block';
+  document.getElementById('continueChoice').style.display='inline-block';
+}
+function starMsg(el,msg){
+  document.getElementById('starMessage').textContent=msg;
+  el.style.transform='scale(1.15)';
+}
+function boss(type){
+  const f=document.getElementById('bossFeedback');
+  if(type==='correct'){
+    f.textContent='Correct answer! 😭💗 Final boss defeated!';
+    setTimeout(()=>go(14),650);
+  }else{
+    f.textContent='Nice try 😂 But escaping the cuteness is impossible. Pick again!';
+  }
+}
+
+function mini1(el,correct){
+  const f=document.getElementById('mini1Feedback');
+  if(correct){ f.textContent='HAHA yes 😂💗 That is definitely the correct level of Kucchu Puchu energy.'; document.getElementById('mini1Next').style.display='inline-block'; el.style.transform='scale(1.03)'; }
+  else { f.textContent='Nooo 😭 That answer has been rejected by the Cute Committee. Try again! 🎀'; }
+}
+let caught=0;
+function catchHeart(){
+  caught++;
+  const score=document.getElementById('heartScore');
+  score.textContent='Hearts caught: '+caught+' / 5';
+  const h=document.getElementById('movingHeart');
+  if(caught>=5){
+    h.style.display='none';
+    document.getElementById('heartFeedback').textContent='YOU DID IT 😭💗 Certified heart catcher!';
+    document.getElementById('heartNext').style.display='inline-block';
+    return;
+  }
+  h.style.left=(8+Math.random()*78)+'%';
+  h.style.top=(8+Math.random()*70)+'%';
+}
+function truth(correct){
+  const f=document.getElementById('truthFeedback');
+  f.textContent=correct ? 'SCANNER RESULT: 100% CUTE. 0% ESCAPE. 🧸💗' : 'ERROR 404: “Not cute” answer not found. 😂';
+  if(correct) document.getElementById('truthNext').style.display='inline-block';
+}
+function finish(){
+  const layer=document.getElementById('heartLayer');
+  const icons=['💗','💖','💕','🫶🏻','🎀','✨','🥹'];
+  for(let i=0;i<55;i++){
+    const h=document.createElement('span');h.className='heart';
+    h.textContent=icons[Math.floor(Math.random()*icons.length)];
+    h.style.left=(5+Math.random()*90)+'vw';
+    h.style.setProperty('--dx',(Math.random()*220-110)+'px');
+    h.style.animationDelay=(Math.random()*.8)+'s';
+    layer.appendChild(h);
+    setTimeout(()=>h.remove(),3400);
+  }
+  setTimeout(()=>go(15),700);
+}
+</script>
+</body>
+</html>
